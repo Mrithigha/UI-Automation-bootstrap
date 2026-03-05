@@ -1,0 +1,23 @@
+{
+  "validUser": {
+    "email": "demo@company.com",
+    "password": "demo123"
+  },
+  "invalidUser": {
+    "email": "wrong@company.com",
+    "password": "wrongpassword"
+  },
+  "newUser": {
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "email": "jane.smith@company.com",
+    "phone": "9876543210",
+    "dateOfBirth": "1992-06-15",
+    "address": "456 Oak Avenue, Springfield"
+  },
+  "employment": {
+    "designation": "Senior Developer",
+    "salary": "95000",
+    "managerName": "Robert Johnson"
+  }
+}

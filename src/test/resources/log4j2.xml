@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Appenders>
+
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+
+    <File name="FileLog" fileName="logs/automation.log" append="false">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+    </File>
+
+  </Appenders>
+
+  <Loggers>
+    <!-- Suppress noisy Selenium/WDM internal logs -->
+    <Logger name="io.github.bonigarcia" level="WARN" additivity="false">
+      <AppenderRef ref="Console"/>
+    </Logger>
+    <Logger name="org.openqa.selenium" level="WARN" additivity="false">
+      <AppenderRef ref="Console"/>
+    </Logger>
+
+    <Root level="INFO">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="FileLog"/>
+    </Root>
+  </Loggers>
+</Configuration>

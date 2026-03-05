@@ -1,0 +1,6 @@
+target/
+reports/
+screenshots/
+logs/
+.idea/
+*.iml
