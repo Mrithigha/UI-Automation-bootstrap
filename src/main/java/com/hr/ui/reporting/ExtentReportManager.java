@@ -12,12 +12,15 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Manages the ExtentReports lifecycle.
- * - getInstance()   → creates/returns the shared ExtentReports object
- * - createTest()    → registers a new test node for the running scenario
- * - getTest()       → returns the ExtentTest for the current thread
- * - flushReport()   → writes results to the HTML report file
+/*
+ * ExtentReportManager — handles the HTML report that gets generated after a test run.
+ *
+ * The report is created once (getInstance()), each scenario gets its own node (createTest()),
+ * and the whole thing is written to disk at the end (flushReport()). The Hooks class takes
+ * care of calling these at the right times, so in step definitions you mainly just call
+ * getTest().info(...) or getTest().pass(...) to add log entries to the current scenario.
+ *
+ * The report file lands in reports/ dir with a timestamp in the name so runs don't overwrite each other.
  */
 public class ExtentReportManager {
 
@@ -27,6 +30,7 @@ public class ExtentReportManager {
 
     private ExtentReportManager() {}
 
+    // creates the report on first call; subsequent calls return the same instance
     public static synchronized ExtentReports getInstance() {
         if (extent == null) {
             String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -35,7 +39,7 @@ public class ExtentReportManager {
             new File("reports").mkdirs();
 
             ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
-            spark.config().setDocumentTitle("HR System — UI Automation Report");
+            spark.config().setDocumentTitle("AppName — UI Automation Report");
             spark.config().setReportName("Test Execution Results");
             spark.config().setTheme(Theme.DARK);
             spark.config().setTimeStampFormat("dd MMM yyyy HH:mm:ss");
@@ -52,16 +56,19 @@ public class ExtentReportManager {
         return extent;
     }
 
+    // registers a new test node for the scenario and binds it to the current thread
     public static ExtentTest createTest(String scenarioName) {
         ExtentTest test = getInstance().createTest(scenarioName);
         currentTest.set(test);
         return test;
     }
 
+    // returns the ExtentTest for the current thread — use this in steps to log info/pass/fail
     public static ExtentTest getTest() {
         return currentTest.get();
     }
 
+    // writes everything to the HTML file — called in @After so the report is always up to date
     public static synchronized void flushReport() {
         if (extent != null) {
             extent.flush();
