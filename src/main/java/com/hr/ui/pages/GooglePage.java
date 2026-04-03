@@ -43,6 +43,9 @@ public class GooglePage extends BasePage {
     }
 
     public boolean isSearchBoxDisplayed() {
-        return isElementDisplayed(SEARCH_BOX);
+        // verifyElementDisplayed throws an AssertionError when the element is not visible
+        // but it returns void. The step expects a boolean value, so use the
+        // non-throwing query helper isElementVisible which returns a boolean.
+        return isElementVisible(SEARCH_BOX);
     }
 }
