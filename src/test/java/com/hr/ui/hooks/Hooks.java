@@ -11,11 +11,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Cucumber hooks — wired around every scenario.
+/*
+ * Hooks — runs setup and teardown around every scenario automatically.
  *
- * @Before  → start browser, create Extent test node
- * @After   → capture screenshot on failure, log result, quit browser, flush report
+ * @Before: opens the browser and registers the scenario in the Extent report.
+ * @After:  if the scenario failed, grabs a screenshot and attaches it to both
+ *          the Cucumber HTML report and the Extent report. Either way, closes
+ *          the browser and flushes the report to disk.
  */
 public class Hooks {
 

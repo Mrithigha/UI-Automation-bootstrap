@@ -12,9 +12,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Captures browser screenshots on test failure.
- * Screenshots are saved to screenshots/<scenarioName>_<timestamp>.png
+/*
+ * ScreenshotUtils — two ways to grab a screenshot depending on where you need it.
+ *
+ * captureAndSave() writes the file to screenshots/ on disk (used by Extent report to link from HTML).
+ * captureAsBytes() returns the raw bytes (used by Cucumber to embed the image inline in its report).
+ * Both are called automatically from Hooks on failure, so you only need this directly
+ * if you want a mid-scenario screenshot for debugging.
  */
 public class ScreenshotUtils {
 
@@ -23,10 +27,7 @@ public class ScreenshotUtils {
 
     private ScreenshotUtils() {}
 
-    /**
-     * Saves a screenshot to disk and returns the absolute file path.
-     * Returns null if capture fails.
-     */
+    // saves the screenshot to disk, returns the file path (or null if something went wrong)
     public static String captureAndSave(WebDriver driver, String scenarioName) {
         try {
             File dir = new File(SCREENSHOT_DIR);
@@ -48,9 +49,7 @@ public class ScreenshotUtils {
         }
     }
 
-    /**
-     * Returns the screenshot as a raw byte array (for attaching to Cucumber report).
-     */
+    // returns raw bytes so Cucumber can embed the image directly in its HTML report
     public static byte[] captureAsBytes(WebDriver driver) {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }

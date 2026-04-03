@@ -91,11 +91,30 @@
       <version>2.18.2</version>
     </dependency>
 
+    <!-- AssertJ — fluent assertions, used via SoftAssertionCollector -->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.25.3</version>
+    </dependency>
+
     <!-- Commons IO — screenshot file copying -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.16.1</version>
+    </dependency>
+
+    <!-- REST Assured — API utility layer for test data setup/teardown -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>5.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>json-path</artifactId>
+      <version>5.4.0</version>
     </dependency>
 
   </dependencies>

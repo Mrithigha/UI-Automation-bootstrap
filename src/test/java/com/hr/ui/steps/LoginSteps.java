@@ -11,7 +11,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginSteps {
 
@@ -29,14 +29,15 @@ public class LoginSteps {
         log.info("Navigated to login page");
     }
 
-    @When("the user enters valid credentials")
-    public void theUserEntersValidCredentials() {
-        String email = JsonUtils.get("validUser", "email");
-        String password = JsonUtils.get("validUser", "password");
+    @When("the user enters {string} credentials")
+    public void theUserEntersCredentials(String credentialType) {
+        String dataKey = credentialType + "User";
+        String email = JsonUtils.get(dataKey, "email");
+        String password = JsonUtils.get(dataKey, "password");
         loginPage.enterEmail(email);
         loginPage.enterPassword(password);
-        ExtentReportManager.getTest().info("Entered valid credentials for: " + email);
-        log.info("Entered credentials for: {}", email);
+        ExtentReportManager.getTest().info("Entered " + credentialType + " credentials for: " + email);
+        log.info("Entered {} credentials for: {}", credentialType, email);
     }
 
     @And("clicks the Sign In button")
@@ -51,7 +52,7 @@ public class LoginSteps {
         landingPage = new LandingPage(DriverManager.getDriver());
         boolean loaded = landingPage.isLoaded();
         ExtentReportManager.getTest().info("Current URL: " + landingPage.getCurrentUrl());
-        Assert.assertTrue("Expected redirect to /home but was at: " + landingPage.getCurrentUrl(), loaded);
+        assertThat(loaded).as("Expected redirect to /home but was at: " + landingPage.getCurrentUrl()).isTrue();
         log.info("Verified redirect to home page");
     }
 }
